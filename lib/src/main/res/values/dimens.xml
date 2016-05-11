@@ -1,0 +1,16 @@
+<resources>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_elevation">2dp</dimen>
+
+    <dimen name="container">190dp</dimen>
+    <dimen name="margin_bottom">10dp</dimen>
+    <dimen name="fab_margin">15dp</dimen>
+    <dimen name="fab_items_margin_lr">7.5dp</dimen>
+    <dimen name="fab_items_margin_bt">8dp</dimen>
+
+    <dimen name="container_y">-10dp</dimen>
+
+    <dimen name="text_lr_padding">10dp</dimen>
+    <dimen name="text_tb_padding">2dp</dimen>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="labelBackground">#F7F7F7</color>
+    <color name="labelText">#434243</color>
+    <color name="fabBackground">#FFF</color>
+</resources>

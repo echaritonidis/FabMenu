@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Demoapp</string>
+
+    <string name="backup_text">Backup</string>
+    <string name="bug_text">Bug</string>
+    <string name="build_text">Build</string>
+    <string name="dashboard_text">Dashboard</string>
+</resources>
