@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FabMenu.iml" filepath="$PROJECT_DIR$/FabMenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demo/demoapp.iml" filepath="$PROJECT_DIR$/demo/demoapp.iml" />
+      <module fileurl="file://C:\Workspace\Android\FabMenu\demo\demoapp.iml" filepath="C:\Workspace\Android\FabMenu\demo\demoapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
     </modules>
   </component>

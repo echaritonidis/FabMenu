@@ -2,7 +2,6 @@ package com.mkchx.widget.fabmenu;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -16,9 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mkchx.widget.fabmenu.interfaces.IViewClick;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +24,16 @@ import java.util.List;
  */
 public class RollUpView extends RelativeLayout implements View.OnClickListener {
 
-    private LinearLayout mUiLinearLayout;
-    private FloatingActionButton mUiFab;
+    private LinearLayout uiLinearLayout;
+    private FloatingActionButton uiFab;
 
     private List<View> mFabList = new ArrayList<>();
     private List<View> mTextList = new ArrayList<>();
 
     private IViewClick iViewClickListener;
 
-    private float fabScale, translationY, startRotation;
-    private int defSize, defElevation, fabItemMarginBT, fabItemMarginLR, lrPadding, tbPadding;
+    private float fabScale, startRotation;
+    private int defSize, defElevation, fabItemMarginTop, fabItemMarginLeft, lrPadding, tbPadding;
 
     public RollUpView(Context context) {
         this(context, null);
@@ -53,25 +49,21 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
         defSize = (int) getResources().getDimension(R.dimen.fab_size_mini);
         defElevation = (int) getResources().getDimension(R.dimen.fab_elevation);
 
-        fabItemMarginBT = (int) getResources().getDimension(R.dimen.fab_items_margin_bt);
-        fabItemMarginLR = (int) getResources().getDimension(R.dimen.fab_items_margin_lr);
+        fabItemMarginLeft = (int) getResources().getDimension(R.dimen.fab_items_margin_left);
 
         lrPadding = (int) getResources().getDimension(R.dimen.text_lr_padding);
         tbPadding = (int) getResources().getDimension(R.dimen.text_tb_padding);
 
-        translationY = getResources().getDimension(R.dimen.container_y);
-
         fabScale = 1f;
 
         LayoutInflater.from(context).inflate(R.layout.rollup_layout, this);
-        mUiLinearLayout = (LinearLayout) findViewById(R.id.custom_content);
-        mUiLinearLayout.setVisibility(GONE);
-        ViewCompat.setTranslationY(mUiLinearLayout, translationY);
+        uiLinearLayout = findViewById(R.id.custom_content);
+        uiLinearLayout.setVisibility(GONE);
 
-        mUiFab = (FloatingActionButton) findViewById(R.id.main_fab);
-        mUiFab.setOnClickListener(this);
+        uiFab = findViewById(R.id.main_fab);
+        uiFab.setOnClickListener(this);
 
-        setViewElevation(mUiFab);
+        setViewElevation(uiFab);
     }
 
     /**
@@ -80,7 +72,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
      * @param drawable The icon of the fab
      */
     public void setMainFabIcon(Drawable drawable) {
-        mUiFab.setImageDrawable(drawable);
+        uiFab.setImageDrawable(drawable);
     }
 
     /**
@@ -90,7 +82,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
      */
     public void setMainFabRotation(float value) {
         startRotation = value;
-        ViewCompat.setRotation(mUiFab, value);
+        ViewCompat.setRotation(uiFab, value);
     }
 
 
@@ -115,7 +107,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
         childWrapper.setOrientation(LinearLayout.HORIZONTAL);
 
         LinearLayout.LayoutParams childParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        childParams.gravity = Gravity.RIGHT;
+        childParams.gravity = Gravity.END;
 
         childWrapper.setLayoutParams(childParams);
         childWrapper.setOnClickListener(new OnClickListener() {
@@ -132,7 +124,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
         childWrapper.addView(createTextView(label));
         childWrapper.addView(createFab(drawable));
 
-        mUiLinearLayout.addView(childWrapper);
+        uiLinearLayout.addView(childWrapper);
     }
 
     private TextView createTextView(String label) {
@@ -160,7 +152,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
 
         LinearLayout.LayoutParams fabParams = new LinearLayout.LayoutParams(defSize, defSize);
         fabParams.gravity = Gravity.CENTER_VERTICAL;
-        fabParams.setMargins(fabItemMarginLR, fabItemMarginBT, fabItemMarginLR, fabItemMarginBT);
+        fabParams.setMargins(fabItemMarginLeft, 0, 0, 0);
         fabView.setLayoutParams(fabParams);
 
         fabView.setImageDrawable(drawable);
@@ -189,119 +181,46 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
      */
     private void toggleText(View view, int delay, int alpha) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            ViewCompat.animate(view)
-                    .setStartDelay(delay)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .alpha(alpha)
-                    .start();
-        } else {
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "alpha", alpha)
-            );
-            mSet.setStartDelay(delay);
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.start();
-        }
-
+        ViewCompat.animate(view)
+                .setStartDelay(delay)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(alpha)
+                .start();
     }
 
     private void rotateMain(View view, float degrees) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            ViewCompat.animate(view)
-                    .rotation(degrees)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .start();
-        } else {
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "rotation", degrees)
-            );
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.start();
-        }
-
+        ViewCompat.animate(view)
+                .rotation(degrees)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .start();
     }
 
     private void animY(View view, float translationY) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            ViewCompat.animate(view)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .translationY(translationY)
-                    .setDuration(500)
-                    .start();
-        } else {
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "translationY", translationY)
-            );
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.setDuration(500);
-            mSet.start();
-        }
-
+        ViewCompat.animate(view)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .translationY(translationY)
+                .setDuration(500)
+                .start();
     }
 
     private void toggleFab(View view, int delay, float scale, final boolean last) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-
-            ViewCompat.animate(view)
-                    .setStartDelay(delay)
-                    .scaleX(scale)
-                    .scaleY(scale)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (last) {
-                                mUiLinearLayout.setVisibility(View.GONE);
-                            }
+        ViewCompat.animate(view)
+                .setStartDelay(delay)
+                .scaleX(scale)
+                .scaleY(scale)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (last) {
+                            uiLinearLayout.setVisibility(View.GONE);
                         }
-                    })
-                    .start();
-        } else {
-
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "scaleX", scale),
-                    ObjectAnimator.ofFloat(view, "scaleY", scale)
-            );
-            mSet.setStartDelay(delay);
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (last) {
-                        mUiLinearLayout.setVisibility(View.GONE);
                     }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
-            mSet.start();
-        }
-
+                })
+                .start();
     }
 
     @Override
@@ -309,12 +228,12 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
 
         int interpolator = 0;
 
-        if (mUiLinearLayout.getVisibility() != VISIBLE) {
+        if (uiLinearLayout.getVisibility() != VISIBLE) {
 
-            mUiLinearLayout.setVisibility(View.VISIBLE);
+            uiLinearLayout.setVisibility(View.VISIBLE);
 
-            animY(mUiLinearLayout, 0);
-            rotateMain(mUiFab, 270);
+            // animY(uiLinearLayout, 0);
+            rotateMain(uiFab, 270);
 
             for (int j = 0; j < mFabList.size(); j++) {
 
@@ -326,8 +245,8 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
 
         } else {
 
-            animY(mUiLinearLayout, translationY);
-            rotateMain(mUiFab, startRotation);
+            // animY(uiLinearLayout, translationY);
+            rotateMain(uiFab, startRotation);
 
             for (int j = mFabList.size() - 1; j >= 0; j--) {
 

@@ -6,7 +6,9 @@
 
     app:fabSize="mini"
     app:elevation="@dimen/fab_elevation"
+    app:borderWidth="0dp"
     app:backgroundTint="@color/fabBackground"
+    app:useCompatPadding="true"
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />

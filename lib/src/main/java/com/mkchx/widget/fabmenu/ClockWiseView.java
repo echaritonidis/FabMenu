@@ -15,9 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mkchx.widget.fabmenu.interfaces.IViewClick;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +52,10 @@ public class ClockWiseView extends RelativeLayout implements View.OnClickListene
         fabScale = 1f;
 
         LayoutInflater.from(context).inflate(R.layout.clockwise_layout, this);
-        mUiLayout = (FrameLayout) findViewById(R.id.custom_content);
+        mUiLayout = findViewById(R.id.custom_content);
         mUiLayout.setVisibility(GONE);
 
-        mUiFab = (FloatingActionButton) findViewById(R.id.main_fab);
+        mUiFab = findViewById(R.id.main_fab);
         mUiFab.setOnClickListener(this);
 
         setViewElevation(mUiFab);
@@ -142,7 +139,7 @@ public class ClockWiseView extends RelativeLayout implements View.OnClickListene
         FloatingActionButton fabView = (FloatingActionButton) LayoutInflater.from(getContext()).inflate(R.layout.fab_mini, null);
 
         FrameLayout.LayoutParams fabParams = new FrameLayout.LayoutParams(defMiniSize, defMiniSize);
-        fabParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+        fabParams.gravity = Gravity.END | Gravity.BOTTOM;
         fabView.setLayoutParams(fabParams);
 
         fabView.setImageDrawable(drawable);
@@ -168,77 +165,28 @@ public class ClockWiseView extends RelativeLayout implements View.OnClickListene
      */
     private void rotateMain(View view, float degrees) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            ViewCompat.animate(view)
-                    .rotation(degrees)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .start();
-        } else {
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "rotation", degrees)
-            );
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.start();
-        }
-
+        ViewCompat.animate(view)
+                .rotation(degrees)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .start();
     }
 
     private void toggleFab(View view, int delay, float scale, final boolean last) {
 
-        if (Build.VERSION.SDK_INT >= 11) {
-
-            ViewCompat.animate(view)
-                    .setStartDelay(delay)
-                    .scaleX(scale)
-                    .scaleY(scale)
-                    .setInterpolator(new FastOutSlowInInterpolator())
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (last) {
-                                mUiLayout.setVisibility(View.GONE);
-                            }
+        ViewCompat.animate(view)
+                .setStartDelay(delay)
+                .scaleX(scale)
+                .scaleY(scale)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (last) {
+                            mUiLayout.setVisibility(View.GONE);
                         }
-                    })
-                    .start();
-        } else {
-
-            AnimatorSet mSet = new AnimatorSet();
-
-            mSet.playTogether(
-                    ObjectAnimator.ofFloat(view, "scaleX", scale),
-                    ObjectAnimator.ofFloat(view, "scaleY", scale)
-            );
-            mSet.setStartDelay(delay);
-            mSet.setInterpolator(new FastOutSlowInInterpolator());
-            mSet.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (last) {
-                        mUiLayout.setVisibility(View.GONE);
                     }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
-            mSet.start();
-        }
-
+                })
+                .start();
     }
 
     @Override
