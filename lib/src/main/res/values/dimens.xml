@@ -4,7 +4,7 @@
     <dimen name="fab_elevation">2dp</dimen>
 
     <dimen name="content_margin">16dp</dimen>
-    <dimen name="child_content_margin">27dp</dimen>
+    <dimen name="child_content_margin">24dp</dimen>
     <dimen name="child_content_bottom_margin">15dp</dimen>
 
     <dimen name="container">190dp</dimen>

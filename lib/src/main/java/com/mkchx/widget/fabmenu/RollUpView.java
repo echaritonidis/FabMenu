@@ -82,7 +82,7 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
      */
     public void setMainFabRotation(float value) {
         startRotation = value;
-        ViewCompat.setRotation(uiFab, value);
+        uiFab.setRotation(value);
     }
 
 
@@ -168,12 +168,12 @@ public class RollUpView extends RelativeLayout implements View.OnClickListener {
     }
 
     private void setViewAlpha(View view, float val) {
-        ViewCompat.setAlpha(view, val);
+        view.setAlpha(val);
     }
 
     private void setScaleXY(View view, float val) {
-        ViewCompat.setScaleX(view, val);
-        ViewCompat.setScaleY(view, val);
+        view.setScaleX(val);
+        view.setScaleY(val);
     }
 
     /**
